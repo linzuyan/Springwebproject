@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="priv.zwc.Mapper.RoleMapper">
+    <select id="queryList" resultType="role">
+        SELECT * FROM tb_role
+    </select>
+
+    <select id="queryById" parameterType="int" resultType="role">
+        SELECT * FROM tb_role WHERE Id=#{id}
+    </select>
+
+    <insert id="addRole" parameterType="role">
+        INSERT INTO tb_role (Id,RoleName) VALUES (#{id},#{roleName})
+    </insert>
+
+    <update id="updateById" parameterType="role">
+        UPDATE tb_role SET RoleName=#{roleName} WHERE Id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM tb_role WHERE Id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="priv.zwc.Mapper.MemberMapper">
+    <select id="queryListPage" resultType="member">
+        SELECT * FROM tb_members
+        <where>
+            <if test="keyword !=null and keyword!=''">
+                OR Id LIKE CONCAT('%',#{keyword},'%') OR Phone LIKE CONCAT('%',#{keyword},'%') OR UserName LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+        <if test="startindex >=0 and pagesize >=0">
+            LIMIT #{startindex},#{pagesize}
+        </if>
+    </select>
+
+    <select id="queryListPageCount" parameterType="string" resultType="int">
+        SELECT COUNT(1) FROM tb_members
+        <where>
+            <if test="_parameter !=null and _parameter!=''">
+                OR Id LIKE CONCAT('%',#{keyword},'%') OR Phone LIKE CONCAT('%',#{keyword},'%') OR UserName LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryById" parameterType="long" resultType="member">
+        SELECT * FROM tb_members WHERE Id=#{id}
+    </select>
+
+    <select id="loginQuery" parameterType="string" resultType="member">
+        SELECT * FROM tb_members WHERE Phone=#{loginname}
+    </select>
+
+    <select id="canAdd" parameterType="string" resultType="int">
+        SELECT COUNT(1) FROM tb_members WHERE Phone=#{loginname}
+    </select>
+
+    <insert id="addMember" parameterType="member" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_members (Phone,UserName,Imgurl,PassWord,Address,Role,CreateTime,UpdateTime) VALUES (#{phone},#{userName},#{imgurl},#{password},#{address},#{role},#{createTime},#{updateTime})
+    </insert>
+
+    <update id="updateById" parameterType="member">
+        UPDATE tb_members SET Phone=#{phone},UserName=#{userName},Imgurl=#{imgurl},PassWord=#{password},Address=#{address},Role=#{role},UpdateTime=#{updateTime} WHERE Id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM tb_members WHERE Id=#{id}
+    </delete>
+</mapper>
